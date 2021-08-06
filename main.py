@@ -2,23 +2,17 @@ from menu import Menu, MenuItem
 from coffee_maker import CoffeeMaker
 from money_machine import MoneyMachine
 
-
-class CoffeeMachine:
-    def __init__(self):
-        self.menu = Menu()
-        self.coffee_maker = CoffeeMaker()
-        self.money_machine = MoneyMachine()
-
-    def coffee_machine(self):
-        order = input(f"What would you like? {self.menu.get_items()}:")
-        if "report" in order:
-            self.coffee_maker.report()
-        else:
-            drink = self.menu.find_drink(order)
-            if self.coffee_maker.is_resource_sufficient(drink):
-                if self.money_machine.make_payment(drink.cost):
-                    self.coffee_maker.make_coffee(drink)
-
-
-coffee_machine = CoffeeMachine()
-coffee_machine.coffee_machine()
+is_on = True
+while is_on:
+    menu = Menu()
+    coffee_maker = CoffeeMaker()
+    money_machine = MoneyMachine()
+    order = input(f"What would you like? {menu.get_items()}:")
+    if order == "report":
+        coffee_maker.report()
+    elif order == "off":
+        is_on = False
+    else:
+        drink = menu.find_drink(order)
+        if coffee_maker.is_resource_sufficient(drink) and money_machine.make_payment(drink.cost):
+            coffee_maker.make_coffee(drink)
